@@ -8,20 +8,6 @@ class Poker::Player
     @ai_code.decide(hand)
   end
 
-  def <<(amount)
-    @stack += amount
-  end
-
-  def -(amount)
-    @stack -= amount
-
-    throw new Exception "Negative stack!" unless amount >= 0
-  end
-
-  def all_in
-    @stack
-  end
-
   def bust?
     @stack == 0
   end
