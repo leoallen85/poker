@@ -12,7 +12,7 @@ class Poker::Deck
     :seven => '7',
     :eight => '8',
     :nine => '9',
-    :ten => '10',
+    :ten => 'T',
     :jack => 'J',
     :queen => 'Q',
     :king => 'K',
@@ -20,23 +20,18 @@ class Poker::Deck
   }
 
   def initialize
-    create_card_array
-  end
-
-  def pull
-    # This is from ruby-poker
-    PokerHand.new(@cards[0, 5])
+    add_cards
   end
 
   private
 
-  def card_array
+  def add_cards
     @cards = []
 
     SUITS.each do |suit, suit_code|
       RANK.each do |rank, rank_code|
         # This is the Card library from ruby-poker
-        @cards << Card.new(suit_code, rank_code)
+        @cards << Card.new(rank_code, suit_code)
       end
     end
 

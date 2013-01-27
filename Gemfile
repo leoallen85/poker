@@ -27,7 +27,7 @@ gem "coffee-rails", "~> 3.2.1"
 gem 'rabl'
 gem 'thin'
 
-gem 'ruby-poker'
+gem 'ruby-poker', :git => 'https://github.com/robolson/ruby-poker.git'
 
 group :development, :test do
   # To use debugger
