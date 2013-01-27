@@ -1,11 +1,15 @@
 class Poker::Player
+
+	attr_reader :stack
+
   def initialize(ai_code)
     @ai_code = ai_code
     @stack = Game::START_STACK
   end
 
-  def decide(hand)
-    @ai_code.decide(hand)
+  def decide(state)
+    @ai_code.decide(state)
+		#NOTE return action object
   end
 
   def <<(amount)

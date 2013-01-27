@@ -1,6 +1,10 @@
 class Poker::Hand
+
+	attr_writer :pot
+
   def initialize(game)
     @game = game
+		@history = []
 
     play
   end
@@ -16,6 +20,21 @@ class Poker::Hand
     # River
     # Once decided, take money off player
   end 
+
+  def get_state:
+    HandState.new(
+      @game.player1.stack,
+			@game.player2.stack,
+			@pot,
+			[],
+			@history
+		)
+  end
+
+  def push_history(player, type, amount)
+		action = Action.new(player, type, amount)
+		@history << action
+  end
 
   def player1
     @game.player1
