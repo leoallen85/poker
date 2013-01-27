@@ -25,6 +25,8 @@ gem 'jquery-rails'
 gem 'rabl'
 gem 'thin'
 
+gem 'ruby-poker'
+
 group :development, :test do
   # To use debugger
   gem 'debugger'
