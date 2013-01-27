@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  bot1_id: 1
+  bot2_id: 1
+
+two:
+  bot1_id: 1
+  bot2_id: 1
