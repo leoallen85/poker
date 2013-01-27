@@ -21,6 +21,14 @@ class Poker::Deck
 
   def initialize
     add_cards
+
+    @cards.shuffle!
+  end
+
+  def deal(cards = 2)
+    throw new Exception "Only #{@cards.length} left in deck, you want #{cards}" unless @cards.length >= cards
+
+    @cards.shift(cards)
   end
 
   private
@@ -34,7 +42,5 @@ class Poker::Deck
         @cards << Card.new(rank_code, suit_code)
       end
     end
-
-    @cards.shuffle!
   end
 end

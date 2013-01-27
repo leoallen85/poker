@@ -1,7 +1,10 @@
 class Poker::Player
   def initialize(ai_code)
     @ai_code = ai_code
-    @stack = Game::START_STACK
+  end
+
+  def join_game(start_stack)
+    @stack = start_stack
   end
 
   def decide(hand)
