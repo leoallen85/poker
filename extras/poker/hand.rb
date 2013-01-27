@@ -1,25 +1,56 @@
 class Poker::Hand
-	attr_writer :pot
+  attr_writer :pot
 
-  def initialize(game, dealer)
+  following_actions = {
+    :button_blind,
+    :under_the_gun_blind,
+    :flop,
+    :turn,
+    :river,
+    # at any time
+    :respond_to_raise
+  }
+
+  def initialize(game, button)
     @game = game
     @deck = Deck.new
-    @dealer = dealer
-    @under_the_gun = (dealer == player1) ? player2 : player1
-		@history = []
 
-    play
+    #posting blinds is an action
+    #
+
+    # @button = button
+    # @under_the_gun = (button == player1) ? player2 : player1
+    # @history = []
+    # @plays = 0
+
+    # # dealer starts the action
+    # play
   end
 
   private
 
+  def deal_hole_cards
+    # Deal each player two hole cards
+    # TODO add hole cards to 
+    @hole_cards = [HoleCards.new(@under_the_gun, deal(2)), HoleCards.new(@button, deal(2))]
+  end
+
   def play
+    deal_hole_cards
+
     pay_blinds
 
-    # Deal each player two hole cards
-    @hole_cards = [HoleCards.new(@under_the_gun, deal(2)), HoleCards.new(@dealer, deal(2))]
+    until @dealer.finished_hand?
+      @dealer.next_move(self)
+    end
 
-    decide_bets(true)
+    current_player = @button
+
+    do
+      next_action = current_player.decide(get_state)
+      current_player = next_player(current_player)
+      take_action(next_action)
+    until next_action.move_on?
 
     # Work out if someone has won the hand (this will happen every time)
     # Flop
@@ -28,42 +59,61 @@ class Poker::Hand
     # Once decided, take money off player
   end
 
+  def next_player(current_player)
+    current_player == @button ? @under_the_gun : @button
+  end
+
+  def take_action(action)
+    result = send(next_action.method)
+
+    if next_action.requires_dealer_action
+      send(next_action.dealer_action)
+    end
+
+    result
+  end
+
+  def flop
+    
+  end
+
   # For the moment we don't play a hand unless both can afford big blind
   def pay_blinds
-    @dealer.pay(@game.small_blind)
+    @button.pay(@game.small_blind)
     @under_the_gun.pay(@game.big_blind)
   end
 
-  def decide_bets(preflop = false)
+  def decide_bets(street = false)
     if preflop
-      first = @dealer
+      first = @button
       last = @under_the_gun
     else
       first = @under_the_gun
-      last = @dealer
+      last = @button
     end
 
     # TODO 
     action = first.decide()
+    action = second.decide()
   end
 
   def deal(cards)
     @deck.deal(cards)
   end
 
-  def get_state:
+  def get_state
     HandState.new(
       @game.player1.stack,
-			@game.player2.stack,
-			@pot,
-			[],
-			@history
-		)
+      @game.player2.stack,
+      @pot,
+      [],
+      @history
+    )
   end
 
   def push_history(player, type, amount)
-		action = Action.new(player, type, amount)
-		@history << action
+    action = Action.new(player, type, amount)
+    @history << action
   end
 
   def player1

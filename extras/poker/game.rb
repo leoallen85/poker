@@ -15,8 +15,8 @@ class Poker::Game
 
   def play
     until @player1.bust?(self) or @player2.bust?(self)
-      @hand = Hand.new(self, dealer)
-      @hands << hand
+      @hand = Hand.new(self, button)
+      @hands << @hand
     end
   end
 
@@ -32,9 +32,9 @@ class Poker::Game
   private
 
   # TODO this is dumb but will work for heads up
-  def dealer
+  def button
     if @hand
-      (@hand.dealer == @player1) ? @player2 : @player1
+      (@hand.button == @player1) ? @player2 : @player1
     else
       # coin toss
       (rand(2) == 0) @player1 : @player2
