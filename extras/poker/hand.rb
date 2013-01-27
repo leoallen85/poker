@@ -1,10 +1,20 @@
 class Poker::Hand
+<<<<<<< HEAD:extra/poker/hand.rb
 
 	attr_writer :pot
 
   def initialize(game)
     @game = game
 		@history = []
+=======
+  DEALER small blind
+
+  def initialize(game, dealer)
+    @game = game
+    @deck = Deck.new
+    @dealer = dealer
+    @under_the_gun = (dealer == player1) ? player2 : player1
+>>>>>>> f07e3dd6db780db1404c13833957bdbc3effd138:extras/poker/hand.rb
 
     play
   end
@@ -13,13 +23,27 @@ class Poker::Hand
 
   def play
     # Deal each player two hole cards
+    @hole_cards = [HoleCards.new(@under_the_gun, deal(2)), HoleCards.new(@dealer, deal(2))]
+
+    # Subtract blinds
+
     # Decide preflop bets
+    bet
+
     # Work out if someone has won the hand (this will happen every time)
     # Flop
     # Turn
     # River
     # Once decided, take money off player
-  end 
+  end
+
+  def bet
+    
+  end
+
+  def deal(cards)
+    @deck.deal(cards)
+  end
 
   def get_state:
     HandState.new(
