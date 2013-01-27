@@ -1,5 +1,4 @@
 class Poker::Hand
-
 	attr_writer :pot
 
   def initialize(game, dealer)
@@ -15,13 +14,12 @@ class Poker::Hand
   private
 
   def play
+    pay_blinds
+
     # Deal each player two hole cards
     @hole_cards = [HoleCards.new(@under_the_gun, deal(2)), HoleCards.new(@dealer, deal(2))]
 
-    # Subtract blinds
-
-    # Decide preflop bets
-    bet
+    decide_bets(true)
 
     # Work out if someone has won the hand (this will happen every time)
     # Flop
@@ -30,8 +28,23 @@ class Poker::Hand
     # Once decided, take money off player
   end
 
-  def bet
-    
+  # For the moment we don't play a hand unless both can afford big blind
+  def pay_blinds
+    @dealer.pay(@game.small_blind)
+    @under_the_gun.pay(@game.big_blind)
+  end
+
+  def decide_bets(preflop = false)
+    if preflop
+      first = @dealer
+      last = @under_the_gun
+    else
+      first = @under_the_gun
+      last = @dealer
+    end
+
+    # TODO 
+    action = first.decide()
   end
 
   def deal(cards)
