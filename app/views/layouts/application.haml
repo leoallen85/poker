@@ -1,0 +1,23 @@
+!!! 5
+%html(lang="en")
+  %head
+    %meta(charset="utf-8")
+    %meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    %title Poker
+    = csrf_meta_tags
+    /[if lt IE 9]
+      = javascript_include_tag "http://html5shim.googlecode.com/svn/trunk/html5.js"
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "application"
+  %body
+    
+    .container
+      .row
+        .span12
+          .page-header
+            .pull-right
+              = link_to "Login", new_user_session_path, class: "btn"
+            %h1 Poker for programmers
+      .row
+        .span12
+          = yield
