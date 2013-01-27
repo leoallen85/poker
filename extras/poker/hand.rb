@@ -1,20 +1,13 @@
 class Poker::Hand
-<<<<<<< HEAD:extra/poker/hand.rb
 
 	attr_writer :pot
-
-  def initialize(game)
-    @game = game
-		@history = []
-=======
-  DEALER small blind
 
   def initialize(game, dealer)
     @game = game
     @deck = Deck.new
     @dealer = dealer
     @under_the_gun = (dealer == player1) ? player2 : player1
->>>>>>> f07e3dd6db780db1404c13833957bdbc3effd138:extras/poker/hand.rb
+		@history = []
 
     play
   end
