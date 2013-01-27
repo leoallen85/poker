@@ -22,6 +22,16 @@ end
 
 gem 'jquery-rails'
 
+gem 'rabl'
+gem 'thin'
+
+group :development, :test do
+  # To use debugger
+  gem 'debugger'
+  gem 'pry-rails'
+  gem 'awesome_print'
+end
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
