@@ -1,28 +1,25 @@
 class Poker::Action
 
-	TYPE = {
-		call: 0,
-		fold: 1,
-		bet: 2,
-		raise: 3,
-	}
+  attr_accessor :player, :hand, :type
 
-  def initialize(player, type, amount)
-    @player = player
-    @type = TYPE[type]
-    @amount = amount
-  end
-	
-  def player
-		@player
+  TYPES = [:post, :fold, :check, :call, :bet, :raise]
+
+  def initialize player, hand, type
+    self.player = player
+    self.hand = hand
+    self.type = type
   end
 
-  def type
-		@type
+  def concludes_street?
+    type.in?([:call, :fold])
   end
 
-  def amount
-    @amount
+  TYPES.each do |type|
+    define_method :"#{ type }?" do
+      self.type == type
+    end
   end
 
 end
+
+

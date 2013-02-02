@@ -1,76 +1,57 @@
 class Poker::Hand
-	attr_writer :pot
 
-  def initialize(game, dealer)
-    @game = game
-    @deck = Deck.new
-    @dealer = dealer
-    @under_the_gun = (dealer == player1) ? player2 : player1
-		@history = []
+  attr_accessor :game, :deck, :pot_size, :small_blind, :big_blind, :hand_history, :community_cards
+  delegate :players, to: :game
 
-    play
+  def initialize game
+    self.game = game
+    self.deck = Poker::Deck.new
+    self.community_cards = []
+    self.pot_size = 0
+    self.hand_history = Poker::HandHistory.new
   end
 
-  private
-
-  def play
-    pay_blinds
-
-    # Deal each player two hole cards
-    @hole_cards = [HoleCards.new(@under_the_gun, deal(2)), HoleCards.new(@dealer, deal(2))]
-
-    decide_bets(true)
-
-    # Work out if someone has won the hand (this will happen every time)
-    # Flop
-    # Turn
-    # River
-    # Once decided, take money off player
+  def small_blind
+    players[game.hands.count % players.count]
   end
 
-  # For the moment we don't play a hand unless both can afford big blind
-  def pay_blinds
-    @dealer.pay(@game.small_blind)
-    @under_the_gun.pay(@game.big_blind)
+  def big_blind
+    players[(game.hands.count + 1) % players.count ]
   end
 
-  def decide_bets(preflop = false)
-    if preflop
-      first = @dealer
-      last = @under_the_gun
+  def current_state
+    State.new(
+      small_blind.stack_size,
+			big_blind.stack_size,
+			pot_size,
+			hand_history,
+      community_cards
+    )
+  end
+
+  # TODO make this method suck less
+  def finished?
+    hand_history.last_action_on_current_street.type == :fold || ( hand_history.actions[:river].count > 1 && ( hand_history.last_action_on_current_street.check? || hand_history.last_action_on_current_street.call? ) )
+  end
+
+  # TODO make this method suck less
+  def winner
+    if finished?
+      if fold = hand_history.all_actions.find(&:fold?)
+        winner = (fold.player == small_blind) ? big_blind : small_blind
+      else
+        winner = if PokerHand.new( small_blind.hole_cards + community_cards ) > PokerHand.new( big_blind.hole_cards + community_cards )
+          small_blind
+        else
+          big_blind
+        end
+      end
     else
-      first = @under_the_gun
-      last = @dealer
+      nil
     end
-
-    # TODO 
-    action = first.decide()
   end
 
-  def deal(cards)
-    @deck.deal(cards)
+  class State < Struct.new(:player1_stack_size, :player2_stack_size, :pot_size, :hand_history, :community_cards)
   end
 
-  def get_state:
-    HandState.new(
-      @game.player1.stack,
-			@game.player2.stack,
-			@pot,
-			[],
-			@history
-		)
-  end
-
-  def push_history(player, type, amount)
-		action = Action.new(player, type, amount)
-		@history << action
-  end
-
-  def player1
-    @game.player1
-  end
-
-  def player2
-    @game.player2
-  end
 end

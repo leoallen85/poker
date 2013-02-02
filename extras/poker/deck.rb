@@ -20,27 +20,22 @@ class Poker::Deck
   }
 
   def initialize
-    add_cards
-
-    @cards.shuffle!
-  end
-
-  def deal(cards = 2)
-    throw new Exception "Only #{@cards.length} left in deck, you want #{cards}" unless @cards.length >= cards
-
-    @cards.shift(cards)
-  end
-
-  private
-
-  def add_cards
     @cards = []
 
     SUITS.each do |suit, suit_code|
       RANK.each do |rank, rank_code|
         # This is the Card library from ruby-poker
-        @cards << Card.new(rank_code, suit_code)
+        @cards << Poker::Card.new(rank_code, suit_code)
       end
     end
+
+    @cards.shuffle!
   end
+
+  def deal n_cards
+    raise Exception.new( "Only #{@cards.length} left in deck, you want #{n_cards}" ) if @cards.length < n_cards
+
+    @cards.shift n_cards
+  end
+
 end
