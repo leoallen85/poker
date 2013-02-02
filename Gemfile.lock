@@ -43,6 +43,7 @@ GEM
       sass (>= 3.2.0)
       thor
     builder (3.0.4)
+    cancan (1.6.8)
     coderay (1.0.8)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -72,6 +73,7 @@ GEM
     eventmachine (1.0.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    friendly_id (4.0.9)
     guard (1.6.2)
       listen (>= 0.6.0)
       lumberjack (>= 1.0.2)
@@ -179,9 +181,11 @@ DEPENDENCIES
   awesome_print
   bootstrap-sass (~> 2.2.2.0)
   bourbon
+  cancan
   coffee-rails (~> 3.2.1)
   debugger
   devise
+  friendly_id
   guard
   guard-livereload
   haml-rails

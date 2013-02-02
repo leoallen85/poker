@@ -1,0 +1,13 @@
+.row-fluid
+  .span6
+    #{@game.bot1.name} by #{@game.bot1.user.name}
+  .span6
+    #{@game.bot2.name} by #{@game.bot2.user.name}
+
+  .span12
+    .hero-unit.fly-center
+      %h1 #{@game.bot2.user.name} WON with #{@game.bot2.name}!!
+
+.row-fluid
+  .span12
+    = link_to "Go back to the lobby", :back

@@ -1,0 +1,13 @@
+.hero-unit
+  You are
+  %strong= @user.name
+
+.row-fluid
+  - @user.bots.each do |bot|
+    .span4.panel.bot-init
+      %h4
+        = bot.name
+      %small 
+        #{pluralize bot.games.count, "game"} played.
+        = link_to "Use", new_game_path(bot: bot.slug), class: "btn btn-mini"
+        = link_to "Edit", edit_bot_path(bot), class: "btn btn-mini"

@@ -1,0 +1,17 @@
+%h3 Lobby (Bot: #{@current_bot.name})
+
+.row-fluid
+  - @bots.each do |bot|
+    .span4.panel.bot-init
+      %h4
+        = bot.name
+        %small
+          by 
+          = bot.user.name
+      - if @current_bot.had_played_with? bot
+        = link_to "View your game against #{bot.name}", game_path(@current_bot.game_with bot), class: "btn btn-block"
+      - else
+        = form_for @game do |f|
+          = f.hidden_field :bot1_id, value: @current_bot.id
+          = f.hidden_field :bot2_id, value: bot.id
+          = f.submit "Play against  #{bot.name}", class: "btn btn-success btn-block"

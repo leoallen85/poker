@@ -10,16 +10,8 @@
       = javascript_include_tag "http://html5shim.googlecode.com/svn/trunk/html5.js"
     = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag "application"
-  %body
+  %body#devise
     
-    - unless current_user
-      .modal.hide
-        .modal-header
-          Hey
-        .modal-body
-          Log in first!
-
-
     .navbar.navbar-inverse
       .navbar-inner
         .container
@@ -35,8 +27,9 @@
               = link_to "Poker for Programmers", root_path, class: "brand"
     .container
       .row
-        .span12
-          - flash.each do |key, msg|
-            .alert{class: "alert-#{key}"}
-              = msg
-          = yield
+        .span6.offset3
+          .panel.panel-offset
+            - flash.each do |key, msg|
+              .alert{class: "alert-#{key}"}
+                = msg
+            .row-fluid= yield

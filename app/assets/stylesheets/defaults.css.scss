@@ -1,0 +1,33 @@
+@import "bootstrap";
+@import "mixin";
+body { font-size: 13px; background-color: #f9f9f9; }
+form { margin: 0; }
+.btn:not(.btn-small):not(.btn-large) { font-size: 13px; }
+.bot-init { 
+  color: inherit; height: 91px; 
+  h4 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  &:hover { background: #f0f0f0; } @include transit(background, 0.3s);
+}
+.fly-center { text-align: center; }
+.fly-right { text-align: right; }
+.navbar .container { width: 940px; }
+.navbar-inner { @include radius(0); }
+.CodeMirror { @include radius(4px); }
+.inline { @include inline-block; }
+.panel {
+  background: #fff;
+  border: 1px solid #eee;
+  padding: 10px;
+  margin-bottom: 2%;
+  &.panel-offset { margin: 50px auto; }
+}
+.row-fluid, .row {
+  @for $i from 1 through 12 {
+    $x: (12 / $i);
+    .span#{$i}:nth-child(#{$x}n+1) { 
+      @for $o from 1 through 12 {
+        &:not(.offset3) { margin-left: 0; }
+      }
+    }
+  }
+}
